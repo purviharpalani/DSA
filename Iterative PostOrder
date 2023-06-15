@@ -1,0 +1,48 @@
+#include <iostream>
+#include<vector>
+#include<stack>
+
+using namespace std;
+
+struct Node{
+    int data;
+    Node* left;
+    Node* right;
+    
+    Node(int val){
+        data = val;
+        left = right = NULL;
+    }
+};
+
+vector<int> postorder(Node *root){
+    stack<Node*> st1, st2;
+    Node* node=root;
+    vector<int> res;
+    if(root==NULL) return res;
+    st1.push(node);
+    while(st1.empty()==false){
+        node = st1.top();
+        st1.pop();
+        st2.push(node);
+        if(node->left) st1.push(node->left);
+        if(node->right) st1.push(node->right);
+    }
+    while(st2.empty()!=true){
+        res.push_back(st2.top()->data);
+        st2.pop();
+    }
+    return res;
+}
+
+
+int main()
+{
+    struct Node* root = new Node(1);
+    root->left = new Node(2);
+    root->right = new Node(3);
+    vector<int> res = postorder(root);
+    for(int i : res)
+    cout<<i;
+    return 0;
+}
